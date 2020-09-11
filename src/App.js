@@ -33,7 +33,7 @@ function App() {
   const winner = calculateWinner(board);
 
   const handleSquareClick = (idx) => {
-    let copyBoard = [...board]; // create a copy array to update and update state
+    let copyBoard = [...board]; // create a copy array to update the state
 
     if (copyBoard[idx] || winner) return; // Check if square was already clicked or winner is already set
     copyBoard[idx] = nextMove; // update the copy array with move to make
@@ -60,26 +60,20 @@ function App() {
 
   return (
     <div className="container">
-      <Board board={board} onClick={handleSquareClick} />
+      <div className="board">
+        {board.map((item, idx) => (
+          <Square
+            className="square"
+            key={idx}
+            value={item}
+            onClick={() => handleSquareClick(idx)}
+          />
+        ))}
+      </div>
       <div className="status">{getStatus()}</div>
       <button className="reset" onClick={() => handleResetClick()}>
         Reset Board
       </button>
-    </div>
-  );
-}
-
-function Board(props) {
-  return (
-    <div className="board">
-      {props.board.map((item, idx) => (
-        <Square
-          className="square"
-          key={idx}
-          value={item}
-          onClick={() => props.onClick(idx)}
-        />
-      ))}
     </div>
   );
 }
