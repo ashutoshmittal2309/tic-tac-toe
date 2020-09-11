@@ -3,6 +3,7 @@
   max-width: 150px;
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  text-align: center;
 }
 
 button {
@@ -31,10 +32,11 @@ button:focus {
   outline: none;
 }
 
-.details {
-  margin-top: 5px;
-  font-size: 15px;
+.status {
+  margin-top: 10px;
+  font-size: 19px;
   font-weight: bold;
+  text-align: center;
 }
 
 .reset {
@@ -42,8 +44,8 @@ button:focus {
   border: none;
   color: white;
   border: 1px solid #999;
-  font-size: 16px;
-  width: 148px;
+  font-size: 12px;
+  width: 100px;
   height: 25px;
-  margin-top: 5px;
+  margin-top: 10px;
 }

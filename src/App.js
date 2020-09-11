@@ -4,7 +4,6 @@ import "./App.css";
 function App() {
   const [board, setBoard] = useState(Array(9).fill(null));
   const [nextMove, setNextMove] = useState("X");
-  const [winner, setWinner] = useState(null);
 
   const calculateWinner = (board) => {
     const winingCombinations = [
@@ -31,13 +30,13 @@ function App() {
     return null;
   };
 
+  const winner = calculateWinner(board);
+
   const handleSquareClick = (idx) => {
     let copyBoard = [...board]; // create a copy array to update and update state
 
     if (copyBoard[idx] || winner) return; // Check if square was already clicked or winner is already set
     copyBoard[idx] = nextMove; // update the copy array with move to make
-
-    setWinner(calculateWinner(copyBoard)); // call the function to find if Winning move has been made and update state
 
     // Update state
     setNextMove(nextMove === "X" ? "O" : "X");
@@ -47,17 +46,22 @@ function App() {
   const handleResetClick = () => {
     setNextMove("X");
     setBoard(Array(9).fill(null));
-    setWinner(null);
+  };
+
+  const getStatus = () => {
+    if (winner) {
+      return "Winner - " + winner;
+    } else if (board.every((item) => item !== null)) {
+      return "Draw Game";
+    } else {
+      return "Next Move - " + nextMove;
+    }
   };
 
   return (
     <div className="container">
-      <Board board={board} onClick={handleSquareClick}></Board>
-      {winner ? (
-        <div className="details">Winner - {winner} </div>
-      ) : (
-        <div className="details"> Next Move - {nextMove} </div>
-      )}
+      <Board board={board} onClick={handleSquareClick} />
+      <div className="status">{getStatus()}</div>
       <button className="reset" onClick={() => handleResetClick()}>
         Reset Board
       </button>
