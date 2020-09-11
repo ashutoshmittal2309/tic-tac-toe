@@ -6,23 +6,43 @@ function App() {
   const [nextMove, setNextMove] = useState("X");
   const [winner, setWinner] = useState(null);
 
+  const calculateWinner = (board) => {
+    const winingCombinations = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
+
+    //iterate array and check if winning combination has been met
+    for (let i = 0; i < winingCombinations.length; i++) {
+      const [pos1, pos2, pos3] = winingCombinations[i];
+      if (
+        board[pos1] &&
+        board[pos1] === board[pos2] &&
+        board[pos1] === board[pos3]
+      )
+        return board[pos1];
+    }
+    return null;
+  };
+
   const handleSquareClick = (idx) => {
-    let copyBoard = [...board];
+    let copyBoard = [...board]; // create a copy array to update and update state
 
-    // Check if square was already clicked
-    if (copyBoard[idx] || winner) return;
+    if (copyBoard[idx] || winner) return; // Check if square was already clicked or winner is already set
+    copyBoard[idx] = nextMove; // update the copy array with move to make
 
-    // update the array with move to make
-    copyBoard[idx] = nextMove;
+    setWinner(calculateWinner(copyBoard)); // call the function to find if Winning move has been made and update state
 
-    // call the function to find if Winning move has been made
-    setWinner(calculateWinner(copyBoard));
-
+    // Update state
     setNextMove(nextMove === "X" ? "O" : "X");
     setBoard(copyBoard);
   };
-
-  const calculateWinner = (board) => {};
 
   const handleResetClick = () => {
     setNextMove("X");
@@ -32,16 +52,7 @@ function App() {
 
   return (
     <div className="container">
-      <div className="board">
-        {board.map((item, idx) => (
-          <Square
-            className="square"
-            key={idx}
-            value={item}
-            onClick={() => handleSquareClick(idx)}
-          />
-        ))}
-      </div>
+      <Board board={board} onClick={handleSquareClick}></Board>
       {winner ? (
         <div className="details">Winner - {winner} </div>
       ) : (
@@ -50,6 +61,21 @@ function App() {
       <button className="reset" onClick={() => handleResetClick()}>
         Reset Board
       </button>
+    </div>
+  );
+}
+
+function Board(props) {
+  return (
+    <div className="board">
+      {props.board.map((item, idx) => (
+        <Square
+          className="square"
+          key={idx}
+          value={item}
+          onClick={() => props.onClick(idx)}
+        />
+      ))}
     </div>
   );
 }
